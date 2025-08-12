@@ -1,0 +1,77 @@
+name: Odoo Module CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: odoo18
+          POSTGRES_PASSWORD: admin
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U odoo18"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-dev \
+            libxml2-dev \
+            libxslt1-dev \
+            libldap2-dev \
+            libsasl2-dev \
+            libpq-dev \
+            libjpeg-dev \
+            libpng-dev \
+            node-less \
+            npm
+
+      - name: Install Odoo
+        run: |
+          pip install wheel
+          pip install odoo==18.0b1
+
+      - name: Run Odoo module tests
+        run: |
+          odoo --addons-path=addons,custom_login_page \
+               -d test_db \
+               --db_host=localhost \
+               --db_user=odoo \
+               --db_password=odoo \
+               --test-enable \
+               --stop-after-init
+
+      - name: Upload Odoo logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: odoo-test-logs
+          path: logs/
+
+      - name: Upload module folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: custom_login_page-module
+          path: custom_login_page/
