@@ -39,10 +39,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y
 
-      - name: Install Odoo
+      - name: Install Odoo 18
         run: |
+          git clone --depth=1 --branch=18.0 https://github.com/odoo/odoo.git
+          cd odoo
           pip install wheel
-          pip install odoo==18.0b1
+          pip install -r requirements.txt
 
       - name: Run Odoo module tests
         run: |
