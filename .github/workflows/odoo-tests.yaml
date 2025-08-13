@@ -60,8 +60,8 @@ jobs:
 
       - name: Run Odoo module tests
         run: |
-          python odoo/odoo-bin \
-            --addons-path=odoo/addons,custom_login_page \
+          python ./odoo-bin \
+            --addons-path= ./addons,/home/runner/work/custom_login_page/custom_login_page \
             -d test_db \
             --db_host=localhost \
             --db_port=5432 \
