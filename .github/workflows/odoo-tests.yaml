@@ -60,10 +60,12 @@ jobs:
 
       - name: Run Odoo module tests
         run: |
-          odoo --addons-path=addons,custom_login_page \
-               -d test_db \
-               --db_host=localhost \
-               --db_user=odoo \
-               --db_password=odoo \
-               --test-enable \
-               --stop-after-init
+          python odoo/odoo-bin \
+            --addons-path=odoo/addons,custom_login_page \
+            -d test_db \
+            --db_host=localhost \
+            --db_port=5432 \
+            --db_user=odoo18 \
+            --db_password=admin \
+            --test-enable \
+            --stop-after-init
