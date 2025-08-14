@@ -24,7 +24,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -71,13 +70,13 @@ jobs:
                --logfile=logs/odoo_test.log
 
       - name: Upload Odoo logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: odoo-test-logs
           path: logs/
 
       - name: Upload module folder
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: custom_login_page-module
           path: custom_login_page/
