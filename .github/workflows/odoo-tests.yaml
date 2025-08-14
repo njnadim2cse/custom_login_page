@@ -5,12 +5,32 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
 
 jobs:
   deploy:
       runs-on: ubuntu-latest
-
+      
       steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+  
+        - name: Set up SSH
+          run: |
+            install -m 600 -D /home/nadim-hossain/Desktop/null ~/.ssh/id_rsa
+            echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan -H ${{ secrets.SERVER_HOST }} > ~/.ssh/known_hosts
+          shell: bash
+  
+        - name: Deploy via SSH
+          run: |
+            ssh -o StrictHostKeyChecking=yes ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "\
+              cd ${{ github.workspace }} && \
+              git pull origin ${{ secrets.MAIN_BRANCH }} && \
+              sudo systemctl restart odoo"
+          shell: bash
+          
         - name: Checkout code
           uses: actions/checkout@v3
 
