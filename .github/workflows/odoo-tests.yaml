@@ -60,14 +60,15 @@ jobs:
       - name: Run Odoo module tests
         run: |
           mkdir -p logs
-          odoo --addons-path=addons,custom_login_page \
-               -d test_db \
-               --db_host=localhost \
-               --db_user=odoo18 \
-               --db_password=admin \
-               --test-enable \
-               --stop-after-init \
-               --logfile=logs/odoo_test.log
+          cd odoo
+          python3 odoo-bin --addons-path=addons,../custom_login_page \
+                           -d test_db \
+                           --db_host=localhost \
+                           --db_user=odoo18 \
+                           --db_password=admin \
+                           --test-enable \
+                           --stop-after-init \
+                           --logfile=../logs/odoo_test.log
 
       - name: Upload Odoo logs
         uses: actions/upload-artifact@v4
