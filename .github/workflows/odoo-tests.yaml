@@ -12,7 +12,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16
+        image: postgres:17
         env:
           POSTGRES_USER: odoo18
           POSTGRES_PASSWORD: admin
@@ -59,16 +59,22 @@ jobs:
 
       - name: Run Odoo module tests
         run: |
+          until pg_isready -h localhost -p 5432 -U odoo18; do
+          echo "Waiting for Postgres..."
+          sleep 2
+          done
+
           mkdir -p logs
-          cd odoo
-          python3 odoo-bin --addons-path=addons \
-                           -d test_db \
-                           --db_host=localhost \
-                           --db_user=odoo18 \
-                           --db_password=admin \
-                           --test-enable \
-                           --stop-after-init \
-                           --logfile=../logs/odoo_test.log
+
+          python3 odoo/odoo-bin \
+            --addons-path=odoo/addons,custom_login_page \
+            -d test_db \
+            --db_host=localhost \
+            --db_user=odoo18 \
+            --db_password=admin \
+            --test-enable \
+            --stop-after-init \
+            --logfile=logs/odoo_test.log
 
       - name: Upload Odoo logs
         uses: actions/upload-artifact@v4
