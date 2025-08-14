@@ -34,6 +34,7 @@ jobs:
             use_insecure_cipher: false
             timeout: 30s
             command_timeout: 10m
+            ssh_options: -o StrictHostKeyChecking=no -v
             script: |
               whoami
               pwd
