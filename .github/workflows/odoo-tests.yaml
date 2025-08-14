@@ -67,8 +67,8 @@ jobs:
           mkdir -p logs
           echo "Current directory: $(pwd)"
           ls -la
-          python3 odoo/odoo-bin \
-            --addons-path=odoo/addons,/home/runner/work/custom_login_page \
+          python3 ../odoo/odoo-bin \
+            --addons-path=../odoo/addons,./custom_login_page \
             -d test_db \
             --db_host=localhost \
             --db_user=odoo18 \
