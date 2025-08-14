@@ -27,8 +27,7 @@ jobs:
           run: |
             ssh -o StrictHostKeyChecking=yes ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "\
               cd ${{ secrets.DIR }} && \
-              git pull origin ${{ secrets.MAIN_BRANCH }} && \
-              sudo systemctl restart odoo"
+              git pull"
           shell: bash
           
         - name: Checkout code
