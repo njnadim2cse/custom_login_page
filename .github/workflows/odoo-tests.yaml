@@ -61,7 +61,7 @@ jobs:
         run: |
           mkdir -p logs
           cd odoo
-          python3 odoo-bin --addons-path=addons,../custom_login_page \
+          python3 odoo-bin --addons-path=addons \
                            -d test_db \
                            --db_host=localhost \
                            --db_user=odoo18 \
