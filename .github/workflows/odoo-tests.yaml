@@ -67,7 +67,7 @@ jobs:
           mkdir -p logs
 
           python3 odoo/odoo-bin \
-            --addons-path=odoo/addons,${{ github.workspace }}/custom_login_page \
+            --addons-path=odoo/addons,/home/runner/work/custom_login_page \
             -d test_db \
             --db_host=localhost \
             --db_user=odoo18 \
