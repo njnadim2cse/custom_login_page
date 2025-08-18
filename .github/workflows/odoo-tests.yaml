@@ -30,14 +30,10 @@ jobs:
             username: ${{ secrets.SERVER_USER }}
             key: ${{ secrets.SERVER_SSH_KEY }}
             port: 22
-            sync: false
-            use_insecure_cipher: false
-            timeout: 30s
-            command_timeout: 10m
             script: |
+              echo "=== Connected to server ==="
               whoami
               pwd
-              cd /opt/odoo/custom_addons/custom_login_page || echo "Directory not found"
+              cd /opt/odoo/custom_login_page/custom_login_page || echo "Directory not found"
               git pull origin main || echo "Git pull failed"
               sudo systemctl restart odoo || echo "Service restart failed"
-            debug: true
