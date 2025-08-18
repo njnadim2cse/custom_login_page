@@ -34,6 +34,13 @@ jobs:
               echo "=== Connected to server ==="
               whoami
               pwd
-              cd /opt/odoo/custom_login_page/custom_login_page || echo "Directory not found"
-              git pull origin main || echo "Git pull failed"
+              cd /opt/odoo/custom_addons/custom_login_page || echo "Directory not found"
+              if [ -d .git ]; then
+                git pull origin main || echo "Git pull failed"
+              else
+                echo "Not a git repo, recloning..."
+                cd /opt/odoo/custom_addons
+                rm -rf custom_login_page
+                git clone https://github.com/njnadim2cse/custom_login_page.git
+              fi
               sudo systemctl restart odoo || echo "Service restart failed"
